@@ -1,13 +1,14 @@
+from fastapi.testclient import TestClient
 from app import app
 
-def test_home_page():
-    client = app.test_client()
+client = TestClient(app)
+
+def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Kubernetes CI/CD is working" in response.data
+    assert "Task Manager API is running" in response.json()["message"]
 
-def test_health_endpoint():
-    client = app.test_client()
+def test_health_check():
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json["status"] == "healthy"
+    assert response.json() == {"status": "up", "database": "disconnected"}

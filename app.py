@@ -1,14 +1,15 @@
-from flask import Flask, jsonify
+from fastapi import FastAPI
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route("/")
-def home():
-    return "Hello Students! Kubernetes CI/CD is working!"
+@summary_route := app.get("/")
+def read_root():
+    return {"message": "Task Manager API is running smoothly!"}
 
-@app.route("/health")
-def health():
-    return jsonify(status="healthy"), 200
+@app.get("/health")
+def health_check():
+    return {"status": "up", "database": "disconnected"}
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.get("/tasks")
+def get_tasks():
+    return [{"id": 1, "title": "Review Kubernetes lab", "completed": False}]
